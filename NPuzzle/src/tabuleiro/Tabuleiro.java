@@ -1,7 +1,9 @@
 package tabuleiro;
 
+import exception.CelulaException;
+import exception.NumeroException;
 
-public class Tabuleiro {
+public abstract class Tabuleiro implements TabuleiroInterface {
 
 	protected int[][] celulas;
 	protected int numero;
@@ -9,27 +11,39 @@ public class Tabuleiro {
 	protected int i;
 	protected int j;
 	protected boolean ganhou;
+	protected boolean maluco;
+	protected int maluquice;
 
 	public Tabuleiro() {
 		this.ganhou = false;
 
 	}
 
+	public Tabuleiro(boolean maluco, int maluquice) {
+		this.maluco = maluco;
+		this.maluquice = maluquice;
+	}
+
 	public int[][] getCelula() {
 		return this.celulas;
 	}
 
-	public void setCelula(int[][] celula) {
-		this.celulas = celula;
+	public void setCelula(int[][] celula) throws CelulaException {
+		if (celula != null) {
+			this.celulas = celula;
+		} else {
+			throw new CelulaException();
+		}
+
 	}
 
 	public int getNumero() {
 		return this.numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(int numero) throws NumeroException {
 		if (numero > this.getQuantidadeCelulas()) {
-			System.out.println("Escolha um numero até " + this.getQuantidadeCelulas());
+			throw new NumeroException(this.getQuantidadeCelulas());
 		} else {
 			for (int linha = 0; linha < this.getCelula().length; linha++) {
 				for (int coluna = 0; coluna < this.getCelula()[linha].length; coluna++) {
@@ -43,7 +57,7 @@ public class Tabuleiro {
 			}
 		}
 	}
-	
+
 	public void getPosicaoNum(int numero) {
 		for (int linha = 0; linha < this.getCelula().length; linha++) {
 			for (int coluna = 0; coluna < this.getCelula()[linha].length; coluna++) {
@@ -54,26 +68,13 @@ public class Tabuleiro {
 			}
 		}
 	}
-	
-	public void getVerificarNum() {
-		for (int linha = 0; linha < this.getCelula().length; linha++) {
-			for (int coluna = 0; coluna < this.getCelula()[linha].length; coluna++) {
-				if (this.getCelula()[0][0] == 1) {
-					System.out.println("lala");
-					return;
-				}
-			}
-		}
-	}
-	
+
+	public abstract void getVerificarNum();
+
 	public int getQuantidadeCelulas() {
 		return this.quantidadeCelulas;
 	}
 
-	public void setQuantidadeCelulas(int quantidadeCelulas) {
-		this.quantidadeCelulas = quantidadeCelulas;
-	}
-	
 	public boolean getGanhou() {
 		return this.ganhou;
 	}
