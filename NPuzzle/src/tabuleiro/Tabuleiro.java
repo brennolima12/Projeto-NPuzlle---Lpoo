@@ -1,10 +1,16 @@
 package tabuleiro;
 
+import java.io.Serializable;
+
 import exception.CelulaException;
 import exception.NumeroException;
 
-public abstract class Tabuleiro implements TabuleiroInterface {
+public abstract class Tabuleiro implements TabuleiroInterface, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected int[][] celulas;
 	protected int numero;
 	protected int quantidadeCelulas;
