@@ -1,16 +1,20 @@
 package jogo;
 
-import exception.MovimentosException;
+import java.io.Serializable;
 
-public class Jogador {
+public class Jogador implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nome;
-	private int movimentos;
 	private boolean ganhador;
-
-	public Jogador(String nome) {
+	private float tempo;
+	
+	public Jogador(String nome, float tempo) {
 		this.nome = nome;
-		this.movimentos = 0;
 		this.ganhador = false;
+		this.tempo = tempo;
 	}
 
 	public String getNome() {
@@ -21,27 +25,20 @@ public class Jogador {
 		this.nome = nome;
 	}
 
-	public int getMovimentos() {
-
-		return this.movimentos;
-
-	}
-
-	public void setMovimentos(int movimentos) throws MovimentosException {
-		if (this.movimentos < 0) {
-			throw new MovimentosException();
-		} else {
-			this.movimentos = movimentos;
-		}
-
-	}
-
 	public void ganhar() {
 		this.ganhador = true;
 	}
 
 	public void perder() {
 		this.ganhador = false;
+	}
+	
+	public float getTempo() {
+		return this.tempo;
+	}
+
+	public void setTempo(float tempo) {
+		this.tempo = tempo;
 	}
 
 }

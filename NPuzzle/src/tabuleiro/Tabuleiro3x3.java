@@ -1,8 +1,14 @@
 package tabuleiro;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Tabuleiro3x3 extends Tabuleiro {
+public class Tabuleiro3x3 extends Tabuleiro implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Tabuleiro3x3() {
 		super();
@@ -16,6 +22,7 @@ public class Tabuleiro3x3 extends Tabuleiro {
 		this.quantidadeCelulas = (9) - 1;
 	}
 
+	
 	public void getVerificarNum() {
 		if (this.maluco) {
 			Random r = new Random();

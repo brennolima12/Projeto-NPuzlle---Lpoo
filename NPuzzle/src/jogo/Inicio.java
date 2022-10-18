@@ -1,7 +1,13 @@
 package jogo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import exception.CelulaException;
 import exception.NumeroException;
@@ -9,16 +15,29 @@ import tabuleiro.Tabuleiro;
 import tabuleiro.Tabuleiro3x3;
 import tabuleiro.Tabuleiro4x4;
 import tabuleiro.Tabuleiro5x5;
+import tabuleiro.Tabuleiro;
+import tabuleiro.Tabuleiro3x3;
+
+import java.io.IOException;
+import java.util.Random;
+
+import exception.CelulaException;
+import repositorio.RepositorioJogador;
+import repositorio.RepositorioTabuleiro;
 
 public class Inicio {
 
-	public void Npuzzle() throws NumeroException, CelulaException {
+	public void Npuzzle() throws NumeroException, CelulaException, IOException {
+		System.out.println("Digite seu nome");
+		Scanner string = new Scanner(System.in);
+		String nome = string.next();
+		
 		Scanner s = new Scanner(System.in);
 		Comunicacao c1 = new Comunicacao();
 		c1.printDificuldade();
 		int dificuldade = s.nextInt();
 
-		while (dificuldade < 1 || dificuldade > 3) {
+		while (dificuldade < 1 || dificuldade > 3 ) { //escolher dificuldade
 			System.out.println("Escolha uma dificuldade 1, 2 ou 3");
 			dificuldade = s.nextInt();
 		}
@@ -27,7 +46,7 @@ public class Inicio {
 
 		System.out.println("Digite 0 para ser maluco, ou qualquer outro número para ser normal.");
 
-		int isMaluco = s.nextInt();
+		int isMaluco = s.nextInt(); //ser maluco
 		int maluquice = 0;
 		if (isMaluco == 0) {
 			System.out.println("Agora Escolha seu nível de maluquice de 0 a 100");
@@ -71,17 +90,72 @@ public class Inicio {
 
 		shuffle(Matriz);
 		tabuleiro.setCelula(Matriz);
+
+		// salvar jogo
+		// RepositorioTabuleiro r = new RepositorioTabuleiro();
+		// r.salvarJogo(1, tabuleiro);
+
+		// dar load jogo
+		// RepositorioTabuleiro r = new RepositorioTabuleiro();
+		// Tabuleiro jogoSalvo = (Tabuleiro) r.buscarArquivoPorId(1);
+		// tabuleiro.setCelula(jogoSalvo.getCelula());
+		long tempoInicial = System.currentTimeMillis();
 		do {
 			print(tabuleiro.getCelula());
 			System.out.println("Escolha o numero para ir para a celula vazia ");
 			int ajuda = s.nextInt();
-			c1.help(ajuda);
-			if (ajuda != 91 && ajuda != 92 && ajuda != 93) {
+			System.out.println(c1.help(ajuda));
+			if (ajuda != 80 && ajuda != 81 && ajuda != 91 && ajuda != 92 && ajuda != 93) { //ajuda
 				tabuleiro.setNumero(ajuda);
 				tabuleiro.getVerificarNum();
+			}else if (ajuda == 80) { //salvar jogo
+				RepositorioTabuleiro r = new RepositorioTabuleiro();
+				
+				r.salvarJogo(1, tabuleiro);
+				System.out.println("Seu jogo foi salvo.");	
 			}
-		} while (!tabuleiro.getGanhou());
-
+			else if(ajuda == 81) { //carregar jogo
+				 RepositorioTabuleiro r = new RepositorioTabuleiro();
+				 Tabuleiro jogoSalvo = (Tabuleiro) r.buscarArquivoPorId(1);
+				 tabuleiro.setCelula(jogoSalvo.getCelula());
+			}
+		} while (!tabuleiro.getGanhou());  
+		
+		long tempoFinal = System.currentTimeMillis() - tempoInicial;
+		
+		//Salvar jogador e sua pontuacao
+		RepositorioJogador repoJogador = new RepositorioJogador();
+		Jogador j = new Jogador(nome, tempoFinal);
+		long id = repoJogador.tamanhoBanco();
+		repoJogador.salvarPontuacao(id, j);
+		ArrayList<Jogador> listaJogadores = new ArrayList<Jogador>();
+		
+		//Listar todos os jogadores
+		for (int i = 0; i < repoJogador.tamanhoBanco(); i++) {
+			Jogador listaJogador = (Jogador) repoJogador.buscarArquivoPorId(i);
+			float tempo = (float) (listaJogador.getTempo()/1000);
+			//System.out.println("------------------------------------------------------------");
+			//System.out.println( "Tempo: " + tempo + "s");
+			
+			
+			listaJogadores.add(listaJogador);
+			//System.out.println(listaJogador.getNome());
+		
+		
+		}
+		
+		List<Jogador> jogadoresMenorTempo = listaJogadores.stream()
+			    .sorted(Comparator.comparing(Jogador::getTempo))
+			    .collect(Collectors.toList());
+		
+		for (int i = 0; i < jogadoresMenorTempo.size(); i++) {
+			float tempo = (float) (((Jogador) jogadoresMenorTempo.get(i)).getTempo()/1000);
+			String n = (((Jogador) jogadoresMenorTempo.get(i)).getNome());
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Tempo: " + tempo +  "s");
+			System.out.println("Nome: " + n);
+		}
+		
 	}
 
 	public static void print(int[][] Matriz2) {
