@@ -21,9 +21,11 @@ public class Comunicacao {
 		} else if (ajuda == 92) {
 			return 
 					"Para ganhar na dificuldade média deve fazer essa sequência: -1- -2- -3- -4- Na primeira linha. -5- -6- -7- -8- Na segunda linha. -9- -10- -11- -12- Na terceira linha. -13- -14- -15- -0- Na quarta linha.";
-		} else {
+		} else if (ajuda == 93){
 			return
 					"Para ganhar na dificuldade dificíl deve fazer essa sequência: -1- -2- -3- -4- -5- Na primeira linha. -6- -7- -8- -9- -10- Na segunda linha. -11- -12- -13- -14- -15- Na terceira linha. -16- -17- -18- -19- -20- Na quarta linha. -21- -22- -23- -24- -0- Na quinta linha.";
+		} else {
+			return "";
 		}
 	}
 
