@@ -1,2 +1,2 @@
 # Projeto-NPuzlle---Lpoo
-Projeto feito para LPOO da Universidade Politécnica de Pernambuco
+Projeto feito para disciplina de LPOO da Universidade Politécnica de Pernambuco
